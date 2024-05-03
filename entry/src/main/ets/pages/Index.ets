@@ -24,7 +24,6 @@ struct Index {
   build() {
     Tabs({ barPosition: BarPosition.End }) {
       TabContent() {
-
         RecordIndex()
       }
       .tabBar(this.TabBarBuilder($r('app.string.tab_record'), $r('app.media.ic_calendar'), 0))
