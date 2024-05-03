@@ -1,6 +1,8 @@
 import { CommonConstants } from '../../common/constants/CommonConstants'
 import DateUtil from '../../common/utils/DateUtil'
+import CalorieStats from './CalorieStats'
 import DatePickDialog from './DatePickDialog'
+import NutrientStats from './NutrientStats'
 
 @Component
 export default struct StatsCard {
@@ -26,13 +28,9 @@ export default struct StatsCard {
       // 2.统计信息
       Swiper(){
         // 2.1 热量统计
-
+        CalorieStats()
         // 2.2 营养素统计
-
-        Text('hello')
-          .width('90%')
-          .height(160)
-          .textAlign(TextAlign.Center).fontSize(30)
+        NutrientStats()
       }
       .width('100%')
       .backgroundColor(Color.White)
