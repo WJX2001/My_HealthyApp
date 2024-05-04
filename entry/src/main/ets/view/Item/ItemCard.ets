@@ -1,7 +1,7 @@
 import { CommonConstants } from '../../common/constants/CommonConstants'
 
 @Component
-@Preview
+
 export default struct ItemCard {
   // 键盘和此展示不是一个组件 需要用prop去接受一下
   @Prop amount: number
@@ -49,7 +49,7 @@ export default struct ItemCard {
   @Builder NutrientInfo(label: string, value: number) {
     Column({ space: CommonConstants.SPACE_8 }) {
       Text(label).fontSize(14).fontColor($r('app.color.light_gray'))
-      Text(value.toFixed(1)).fontSize(18).fontWeight(CommonConstants.FONT_WEIGHT_700)
+      Text((value * this.amount).toFixed(1)).fontSize(18).fontWeight(CommonConstants.FONT_WEIGHT_700)
     }
   }
 }
