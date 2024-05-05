@@ -1,62 +1,45 @@
 import { CommonConstants } from '../../common/constants/CommonConstants'
+import ItemModel from '../../model/ItemModel'
+import GroupInfo from '../../viewmodel/GroupInfo'
+import ItemCategory from '../../viewmodel/ItemCategory'
+import RecordItem from '../../viewmodel/RecordItem'
 
-@Extend(Text) function grayText() {
-  .fontSize(14)
-  .fontColor($r('app.color.light_gray'))
-}
-
-@Preview
 @Component
 export default struct ItemList {
+  showPanel: (item: RecordItem) => void
+  @Prop isFood: boolean
 
-  // 复组件传过来的函数，控制父组件的Panel显隐
-  showPanel: () => void
   build() {
     Tabs() {
       TabContent() {
-        this.TabContentBuilder()
+        this.TabContentBuilder(ItemModel.list(this.isFood))
       }
       .tabBar('全部')
 
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar('主食')
-
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar('果蔬')
-
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar('肉蛋奶')
-
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar('坚果')
-
-      TabContent() {
-        this.TabContentBuilder()
-      }
-      .tabBar('其他')
+      ForEach(
+        ItemModel.listItemGroupByCategory(this.isFood),
+        (group: GroupInfo<ItemCategory, RecordItem>) => {
+          TabContent() {
+            this.TabContentBuilder(group.items)
+          }
+          .tabBar(group.type.name)
+        })
     }
     .width(CommonConstants.THOUSANDTH_940)
     .height('100%')
+    .barMode(BarMode.Scrollable)
   }
 
-  @Builder TabContentBuilder() {
+  @Builder TabContentBuilder(items: RecordItem[]) {
     List({ space: CommonConstants.SPACE_10 }) {
-      ForEach([1, 2, 3, 4, 5], (item) => {
+      ForEach(items, (item: RecordItem) => {
         ListItem() {
           Row({ space: CommonConstants.SPACE_6 }) {
-            Image($r('app.media.toast')).width(50)
+            Image(item.image).width(50)
             Column({ space: CommonConstants.SPACE_4 }) {
-              Text('全麦吐司').fontWeight(CommonConstants.FONT_WEIGHT_500)
-              Text('91千卡/片').grayText()
-            }
+              Text(item.name).fontWeight(CommonConstants.FONT_WEIGHT_500)
+              Text(`${item.calorie}千卡/${item.unit}`).fontSize(14).fontColor($r('app.color.light_gray'))
+            }.alignItems(HorizontalAlign.Start)
 
             Blank()
             Image($r('app.media.ic_public_add_norm_filled'))
@@ -66,7 +49,7 @@ export default struct ItemList {
           .width('100%')
           .padding(CommonConstants.SPACE_6)
         }
-        .onClick(() => this.showPanel())
+        .onClick(() => this.showPanel(item))
       })
     }
     .width('100%')
